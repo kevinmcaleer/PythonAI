@@ -6,6 +6,7 @@ import speech_recognition as sr
 
 class AI():
     __name = ""
+    __skills = []
     
 
     def __init__(self, name=None):
@@ -57,3 +58,13 @@ class AI():
         #         self.engine.runAndWait()
         # except LookupError:
         #     print("Could not understand audio")
+
+    def register_skill(self, newskill):
+        self.__skills.append(newskill)
+        print("added new skill", newskill.name)
+
+    def list_skills(self):
+        for skill in self.__skills:
+            print(skill.name)
+
+    
