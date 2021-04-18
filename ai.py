@@ -2,18 +2,16 @@ import pyaudio
 import wave
 import pyttsx3
 import speech_recognition as sr
-
+from webui import *
 
 class AI():
     __name = ""
     __skills = []
-    
 
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
         self.r = sr.Recognizer()
-        self.m = sr.Microphone(device_index=1)
-        
+        self.m = sr.Microphone()
         
         if name is not None:
             self.__name = name
@@ -21,7 +19,9 @@ class AI():
         print("Listening")
         with self.m as source: 
             self.r.adjust_for_ambient_noise(source)
-
+        
+        # Launch Web UI
+        # main()
     @property
     def name(self):
         return self.__name

@@ -8,6 +8,7 @@ alf = AI()
 weather = Skill_weather()
 alf.register_skill(weather)
 alf.list_skills()
+
 while True:
     command = alf.listen()
     print("command was:",command)
