@@ -45,6 +45,8 @@ class AI():
         print("Got it")
         try:
             phrase = self.r.recognize_google(audio)
+            self.engine.say("You said", phrase)
+            self.engine.runAndWait()
         except ValueError:
             print("Sorry, didn't catch that")
             self.engine.say("Sorry, I didn't catch that")
