@@ -44,20 +44,22 @@ class AI():
                 audio = self.r.listen(source)
         print("Got it")
         phrase = self.r.recognize_google(audio)
-        return phrase 
-        # try:
-        #     phrase = self.r.recognize_google(audio)
-        #     if phrase == "robot":
-        #         self.engine.say("Im listening")
-        #         self.engine.runAndWait()
-        #         with self.m as source: audio = self.r.listen(source)
-        #         phrase = self.r.recognize_google(audio)
+        
+        try:
+            phrase = self.r.recognize_google(audio)
+            if phrase == "robot":
+                self.engine.say("Im listening")
+                self.engine.runAndWait()
+                with self.m as source: audio = self.r.listen(source)
+                phrase = self.r.recognize_google(audio)
                 
-        #         print("you said" + self.r.recognize_google(audio))
-        #         self.engine.say("You said " + self.r.recognize_google(audio))
-        #         self.engine.runAndWait()
-        # except LookupError:
-        #     print("Could not understand audio")
+                print("you said" + self.r.recognize_google(audio))
+                self.engine.say("You said " + self.r.recognize_google(audio))
+                self.engine.runAndWait()
+                return phrase 
+        except LookupError:
+            print("Could not understand audio")
+        return ""
 
     def register_skill(self, newskill):
         self.__skills.append(newskill)
