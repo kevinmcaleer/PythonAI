@@ -43,8 +43,13 @@ class AI():
         with self.m as source: 
                 audio = self.r.listen(source)
         print("Got it")
-        phrase = self.r.recognize_google(audio)
-        
+        try:
+            phrase = self.r.recognize_google(audio)
+        except ValueError:
+            print("Sorry, didn't catch that")
+            self.engine.say("Sorry, I didn't catch that")
+            self.engine.runAndWait()
+        print("You said",phrase)
         try:
             phrase = self.r.recognize_google(audio)
             if phrase == "robot":
