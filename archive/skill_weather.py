@@ -15,8 +15,13 @@ class Skill_weather(Skill):
         self.actions = ['get_weather']    
         self.ow = OWM(api_key)
         self.mgr = self.ow.weather_manager()
+        self.actions = ["get weather"]
         
     def weather(self):
         forecast = self.mgr.weather_at_place(location)
         return forecast
 
+    def execute(self, action):
+        if action in [self.actions]:
+            if action == "get weather":
+                self.weather()

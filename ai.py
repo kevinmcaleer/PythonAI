@@ -7,8 +7,17 @@ class AI():
 
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
+        # self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.ava.premium')
+        voices = self.engine.getProperty('voices')
+        self.engine.setProperty('voice' ,voices[5].id)
+        name = voices[5].name
+        print(name)
+        # voices = self.engine.getProperty('voices')
+        # for voice in voices:
+        #     print(voice, voice.id)
         self.r = sr.Recognizer()
         self.m = sr.Microphone()
+       
 
         if name is not None:
             self.__name = name 
@@ -38,7 +47,8 @@ class AI():
             audio = self.r.listen(source)
         print("got it")
         try:
-            phrase = self.r.recognize_google(audio, show_all=True, language="en_US")
+            phrase = self.r.recognize_google(audio, show_all=False, language="en_US")
+            phrase = str(phrase)
             sentence = "Got it, you said" + phrase
             self.engine.say(sentence)
             self.engine.runAndWait()
