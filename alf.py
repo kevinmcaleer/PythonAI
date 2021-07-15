@@ -1,6 +1,7 @@
 import pyjokes
 from ai import AI
 from todo import Todo, Item
+from weather import Weather
 
 alf = AI()
 todo = Todo()
@@ -20,7 +21,7 @@ def add_todo()->bool:
     try:
         item.title = alf.listen()
         todo.new_item(item)
-        message = "Added" + item.title
+        message = "Added " + item.title
         alf.say(message)
         return True
     except:
@@ -40,16 +41,27 @@ def remove_todo()->bool:
     try:
         item_title = alf.listen()
         todo.remove_item(title=item_title)
-        message = "Removed" + item_title
+        message = "Removed " + item_title
         alf.say(message)
         return True
     except:
         print("opps there was an error")
         return False
     
-
+def weather()->bool:
+    """ Gets the weather or returns an error """
+    try:
+        myweather= Weather()
+        forecast = myweather.forecast
+        print(forecast)
+        alf.say(forecast)
+        return True
+    except:
+        print("there was an error with the weather")
+        return False
 
 command = ""
+alf.say("Hello")
 while True and command != "goodbye":
     try:
         command = alf.listen()
@@ -70,5 +82,6 @@ while True and command != "goodbye":
         command = ""
     if command in ["remove todo", "remove item", "mark done", "remove todos", "remove to-do", "remove to do's"]:
         remove_todo()
-
-alf.say("Goodbye, I'm going to sleep now")
+    if command in ["what's the weather like", "Weather", "what's the forecast", "what's the weather today"]:
+        weather()
+alf.say("Goodbye!")
