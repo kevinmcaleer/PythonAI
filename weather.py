@@ -1,8 +1,7 @@
 # Weather skill
 
 from pyowm import OWM
-from geopy import Nominatim, geocoders
-import geopandas
+from geopy import Nominatim
 from datetime import datetime
 
 class Weather():
@@ -23,6 +22,21 @@ class Weather():
         loc = locator.geocode(self.__location)
         self.lat = loc.latitude
         self.long = loc.longitude
+
+    def uv_index(self, uvi:float):
+        """ Returns a message depending on the UV Index provided """
+        message = ""
+        if uvi <=2.0:
+            message = "The Ultra Violet level is low, no protection required."
+        if uvi >=3.0 and uvi <6.0:
+            message = "The Ultra Violet level is medium, skin protection is required."
+        if uvi >=6.0 and uvi <8.0:
+            message = "The Ultra Violet level is high, skin protection is required."
+        if uvi >=8.0 and uvi <11.0:
+            message = "The Ultra Violet level is very high, extra skin protection is required."
+        if uvi >=11.0:
+            message = "The Ultra Violet level is extemely high, caution is adviced and extra skin protection is required."
+        return message
 
     @property    
     def weather(self):
@@ -52,6 +66,7 @@ class Weather():
         temp_low = str(forecast.forecast_daily[0].temperature('celsius').get('temp_max'))
         sunset = datetime.utcfromtimestamp(forecast.forecast_daily[0].sunset_time()).strftime('%H:%M:%S')
         feels_like = str(forecast.forecast_daily[0].temperature('celsius').get('feels_like_day'))
+        uvi = forecast.forecast_daily[0].uvi
 
         # print('detailed status:',detailed_status)
         # print('humidity',humidity)
@@ -60,15 +75,17 @@ class Weather():
         # print('sunset',sunset)
         # print('feels_like',feels_like)
         # print('pressure',pressure)
+        print("UVI: ", uvi)
 
     # + ", with a high of " + temp_high + " and a low of " + temp_low \
 
-        message = "Today will be mostly " + detailed_status \
+        message = "Here is the Weather: Today will be mostly " + detailed_status \
                 + ", with a temperature of  " + temperature \
                 + ", humidity of " + humidity + " percent" \
                 + " and a pressure of " + pressure + " millibars" \
                 + ". Sunrise was at " + sunrise \
-                + ", and Sunset at " + sunset
+                + ", and Sunset at " + sunset \
+                + ". " + self.uv_index(float(uvi))
         return message
 
     @property
@@ -80,6 +97,8 @@ class Weather():
     def location(self, value):
         """ Sets the current location """
         self.__location = value
+
+    
 
 # Demo
 # myweather= Weather()

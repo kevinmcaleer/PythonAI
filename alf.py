@@ -2,6 +2,8 @@ import pyjokes
 from ai import AI
 from todo import Todo, Item
 from weather import Weather
+from randfacts import randfacts
+from datetime import datetime
 
 alf = AI()
 todo = Todo()
@@ -9,6 +11,11 @@ todo = Todo()
 # item2 = Item("potatoes")
 # todo.new_item(item)
 # todo.new_item(item2)
+
+def fact():
+    fun_fact = randfacts.get_fact()
+    print(fun_fact)
+    alf.say(fun_fact)
 
 def joke():
     funny = pyjokes.get_joke()
@@ -84,4 +91,24 @@ while True and command != "goodbye":
         remove_todo()
     if command in ["what's the weather like", "Weather", "what's the forecast", "what's the weather today"]:
         weather()
+    if command in ["tell me something","tell me a fact", "tell me a random fact","another one"]:
+        fact()
+    if command in ["good morning","good afternoon","hey alf","good afternoon","good evening","good night"]:
+      
+        now = datetime.now()
+        # time = datetime.strftime(now, "%Y-%m-%d %H:%M:%S")
+        hr = now.hour
+        if hr <= 0 <= 12: 
+            message = "Morning"
+        if hr >= 12 <= 17:
+            message = "Afternoon"
+        if hr > 17 <= 21:
+            message = "Evening"
+        if hr >21: message = "Night"
+        message = "Good " + message + "Kevin."
+        alf.say(message)
+        weather()
+        fact()
+        list_todos()
+        joke()
 alf.say("Goodbye!")
