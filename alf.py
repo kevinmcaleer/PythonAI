@@ -11,10 +11,6 @@ alf = AI()
 todo = Todo()
 calendar = Calendar_skill()
 calendar.load()
-# item = Item(title="get shopping")
-# item2 = Item("potatoes")
-# todo.new_item(item)
-# todo.new_item(item2)
 
 def facts():
     fact = randfacts.get_fact()
@@ -114,11 +110,8 @@ def list_events(period):
         print(message)
         alf.say(message)
         for event in this_period:
-            # alf.say(event.begin.datetime)
             event_date = event.begin.datetime
             weekday = datetime.strftime(event_date, "%A")
-            
-            print(weekday, type(weekday))
             day = str(event.begin.datetime.day)
             month = datetime.strftime(event_date, "%B")
             year = datetime.strftime(event_date, "%Y")
@@ -126,15 +119,14 @@ def list_events(period):
             print(message)
             alf.say(message)
             name = event.name
-            print("name is:",name)
+            print("there is an event called ",name)
             message = "there is an event called " + name
             alf.say(message)
             description = event.description
             message = "the event description is " + description
-            print("description is:",description)
+            print("the event description is ",description)
             alf.say(message)
 
-            
 command = ""
 alf.say("Hello")
 while True and command != "goodbye":

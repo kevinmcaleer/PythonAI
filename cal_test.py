@@ -1,15 +1,7 @@
-# calendar.py
-
-# from ics import Calendar, Event
-
-# c = Calendar()
-# e = Event()
-# e.name = "My cool Event"
-# e.begin = '2021-08-16 16:28:00'
-# c.events.add(e)
-# print(c.events)
-# with open('my.ics','w') as my_file:
-#     my_file.writelines(c)
+# cal_test.py
+# Calendar test
+# Kevin McAleer
+# 18 August 2021
 
 from calendar_skill import Calendar, Calendar_skill
 

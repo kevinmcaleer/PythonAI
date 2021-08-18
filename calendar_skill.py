@@ -18,9 +18,11 @@ class Calendar_skill():
     c = Calendar()
     
     def __init__(self):
+        ''' Print a nice banner '''
         print("")
         print("*"*50)
-        print("")
+        print("Calendar Skill Loaded")
+        print("*"*50)
 
     def add_event(self, begin:str, name:str, description:str=None)-> bool:
         ''' adds an event to the calendar '''
@@ -88,7 +90,6 @@ class Calendar_skill():
         if my_file.is_file():
             stream = open(filename,'r')
             events_list = yaml.load(stream)
-            # print("events =",events_list)
             for item in events_list:
                 e = Event()
                 e.begin = item['begin']
@@ -118,7 +119,8 @@ class Calendar_skill():
             return None
         else:
             event_list = []
-            # print("All events:",self.c.events)
+            # have to fix the localisation - thats the +00 timezone bit on the date
+            # otherwise it complains of non-naive date being compared with naive date
             now = pytz.utc.localize(datetime.now())
             if period == "this week":
                 nextweek = now+relativedelta(weeks=+1)
@@ -126,13 +128,9 @@ class Calendar_skill():
                 nextweek = now+relativedelta(months=+1)
             if period == "all":
                 nextweek = now+relativedelta(years=+100)
-            # print("now type",now,type(now))
-            # print("nextweek type",nextweek,type(nextweek))
             for event in self.c.events:
                 event_date = event.begin.datetime
-                # print("event datetime type",event_date,type(event_date))
-                if (event_date >= now) and (event_date <= nextweek):
-                    print("Adding event to list:",event.name)
+                if (event_date >= now) and (event_date <= nextweek):    
                     event_list.append(event)
             return event_list
 
