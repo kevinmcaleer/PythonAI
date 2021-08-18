@@ -70,7 +70,7 @@ def add_event()->bool:
         event_isodate = dateparser.parse(event_begin).strftime("%Y-%m-%d %H:%M:%S")
         alf.say("What is the event description?")
         event_description = alf.listen()
-        message = "Ok, adding event" + event_name
+        message = "Ok, adding event " + event_name
         alf.say(message)
         calendar.add_event(begin=event_isodate, name=event_name, description=event_description)
         calendar.save()
