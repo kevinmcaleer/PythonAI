@@ -41,7 +41,7 @@ def list_todos():
         for item in todo:
             alf.say(item.title)
     else:
-        alf.say("The list is empty!")
+        alf.say("The to-do list is empty!")
 
 def weather():
     myweather = Weather()
@@ -107,6 +107,7 @@ def list_events(period):
             message = message + ' events'
         else:
             message = message + ' event'
+        message = message + " in the diary"
         print(message)
         alf.say(message)
         for event in this_period:
@@ -115,16 +116,13 @@ def list_events(period):
             day = str(event.begin.datetime.day)
             month = datetime.strftime(event_date, "%B")
             year = datetime.strftime(event_date, "%Y")
-            message = "On " + weekday + " " + day + " of " + month + " " + year
-            print(message)
-            alf.say(message)
+            time = datetime.strftime(event_date, "%I:%M %p")
             name = event.name
-            print("there is an event called ",name)
-            message = "there is an event called " + name
-            alf.say(message)
             description = event.description
-            message = "the event description is " + description
-            print("the event description is ",description)
+            message = "On " + weekday + " " + day + " of " + month + " " + year + " at " + time    
+            message = message + ", there is an event called " + name
+            message = message + " with an event description of " + description
+            print(message)
             alf.say(message)
 
 command = ""
@@ -166,6 +164,7 @@ while True and command != "goodbye":
 
         message = "Good" + message + "Kevin"
         alf.say(message)
+        list_events(period="this week")
         weather()
         list_todos()
         joke()
@@ -178,7 +177,7 @@ while True and command != "goodbye":
         remove_event()
     if command in ['list events',"what's on this month","what's coming up this month"]:
         list_events(period='this month')
-    if command in ["what's on this week","what's coming up this week"]:
+    if command in ["what's on this week","what's coming up this week","what's happening"]:
         list_events(period='this week')
     if command in ['list all events']:
         list_events(period='all')
