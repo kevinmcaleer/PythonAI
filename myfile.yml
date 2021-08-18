@@ -1,6 +1,9 @@
-- begin: 2021-08-22 19:00:00+00:00
-  description: new livestream
-  name: live stream
-- begin: 2021-08-15 19:00:00+00:00
+- begin: 2021-12-25 09:00:00+00:00
+  description: Christmas Day
+  name: Christmas
+- begin: 2021-09-15 19:00:00+00:00
   description: new YouTube video
-  name: live stream
+  name: youtube stream
+- begin: 2021-08-22 19:00:00+00:00
+  description: new youtube stream
+  name: youtube stream
