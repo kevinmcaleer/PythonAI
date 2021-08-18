@@ -11,7 +11,7 @@ from dateutil.relativedelta import *
 import pytz
 from yaml import loader
 
-calendar_filename = 'myfile.ics'
+calendar_filename = 'docs/myfile.ics'
 calendar_datafile = 'myfile.yml'
 
 class Calendar_skill():
