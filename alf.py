@@ -14,12 +14,12 @@ calendar.load()
 
 def facts():
     fact = randfacts.get_fact()
-    print(fact)
+    # print(fact)
     alf.say(fact)
 
 def joke():
     funny = pyjokes.get_joke()
-    print(funny)
+    # print(funny)
     alf.say(funny)
 
 def add_todo()->bool:
@@ -41,12 +41,12 @@ def list_todos():
         for item in todo:
             alf.say(item.title)
     else:
-        alf.say("The to-do list is empty!")
+        alf.say("The to do list is empty!")
 
 def weather():
     myweather = Weather()
     forecast = myweather.forecast
-    print(forecast)
+    # print(forecast)
     alf.say(forecast)
 
 def remove_todo()->bool:
@@ -108,7 +108,7 @@ def list_events(period):
         else:
             message = message + ' event'
         message = message + " in the diary"
-        print(message)
+        # print(message)
         alf.say(message)
         for event in this_period:
             event_date = event.begin.datetime
@@ -122,7 +122,7 @@ def list_events(period):
             message = "On " + weekday + " " + day + " of " + month + " " + year + " at " + time    
             message = message + ", there is an event called " + name
             message = message + " with an event description of " + description
-            print(message)
+            # print(message)
             alf.say(message)
 
 command = ""
@@ -162,7 +162,7 @@ while True and command != "goodbye":
             message = "Evening"
         if hr > 21: message = "Night"
 
-        message = "Good" + message + "Kevin"
+        message = "Good " + message + " Kevin"
         alf.say(message)
         list_events(period="this week")
         weather()

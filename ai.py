@@ -38,6 +38,7 @@ class AI():
         self.engine.runAndWait()
 
     def say(self, sentence):
+        print(sentence)
         self.engine.say(sentence)
         self.engine.runAndWait()
 
