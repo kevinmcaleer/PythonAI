@@ -9,7 +9,7 @@ import yaml
 from datetime import datetime
 from dateutil.relativedelta import *
 import pytz
-from yaml import loader
+# from yaml import loader
 
 calendar_filename = 'docs/myfile.ics'
 calendar_datafile = 'myfile.yml'
@@ -116,21 +116,21 @@ class Calendar_skill():
         if self.c.events == set():
             # no events found
             print("No Events In Calendar")
-            return None
+            return False
         else:
             event_list = []
             # have to fix the localisation - thats the +00 timezone bit on the date
             # otherwise it complains of non-naive date being compared with naive date
             now = pytz.utc.localize(datetime.now())
             if period == "this week":
-                nextweek = now+relativedelta(weeks=+1)
+                nextperiod = now+relativedelta(weeks=+1)
             if period == "this month":
-                nextweek = now+relativedelta(months=+1)
+                nextperiod = now+relativedelta(months=+1)
             if period == "all":
-                nextweek = now+relativedelta(years=+100)
+                nextperiod = now+relativedelta(years=+100)
             for event in self.c.events:
                 event_date = event.begin.datetime
-                if (event_date >= now) and (event_date <= nextweek):    
+                if (event_date >= now) and (event_date <= nextperiod):    
                     event_list.append(event)
             return event_list
 
