@@ -5,7 +5,7 @@ from weather import Weather
 from randfacts import randfacts
 from datetime import datetime
 from calendar_skill import Calendar_skill
-import dateparser
+import dateparser 
 
 alf = AI()
 todo = Todo()
@@ -135,6 +135,7 @@ while True and command != "goodbye":
         print("oops there was an error")
         command = ""
     print("command was:", command)
+    print(f'Conversation History: {alf.get_conversation()}')
 
     if command == "tell me a joke":
         joke()

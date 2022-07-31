@@ -1,9 +1,11 @@
 import pyttsx3
 import speech_recognition as sr 
+from conversation_history import Conversation_history
 
 class AI():
     __name = ""
     __skill = []
+    __conversation_history = Conversation_history()
 
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
@@ -17,7 +19,6 @@ class AI():
         #     print(voice, voice.id)
         self.r = sr.Recognizer()
         self.m = sr.Microphone()
-       
 
         if name is not None:
             self.__name = name 
@@ -39,11 +40,13 @@ class AI():
 
     def say(self, sentence):
         print(sentence)
+        self.__conversation_history.add_item(message_type='RESPONSE', message=sentence)
         self.engine.say(sentence)
         self.engine.runAndWait()
 
     def listen(self):
         print("Say Something")
+
         with self.m as source:
             try:
                 audio = self.r.listen(source)
@@ -65,3 +68,5 @@ class AI():
         print("You Said", phrase)
         return phrase
     
+    def get_conversation(self):
+        return self.__conversation_history.get_items()
