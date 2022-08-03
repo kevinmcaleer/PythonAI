@@ -6,6 +6,10 @@ from pyowm import OWM
 from geopy import Nominatim, location
 from datetime import datetime
 
+from dataclasses import dataclass
+from skills import factory
+from ai import AI
+
 class Weather():
 
     # The location of where you want the forecast for
@@ -77,6 +81,21 @@ class Weather():
         # print(message)
         return message
 
-# Demo
-# myweather = Weather()
-# print(myweather.forecast)
+
+
+@dataclass
+class Weather_skill:
+    name = 'weather_skill'
+
+    def commands(self, command:str):
+        return ['weather', 'forecast', 'what is the weather like', 'give me the forecast',"what's the weather","what's the weather like"]
+
+    def handle_command(self, command:str, ai:AI):
+        myweather = Weather()
+        forecast = myweather.forecast
+        ai.say(forecast)
+        return forecast
+
+def initialize():
+    factory.register('weather_skill', Weather_skill)
+    print("Weather initialized")

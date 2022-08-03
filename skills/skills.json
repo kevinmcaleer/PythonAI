@@ -1,0 +1,17 @@
+{
+    "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes", "skills.goodday"],
+    "skills": [
+        {
+            "name": "weather_skill"
+        },
+        {
+            "name": "facts_skill"
+        },
+        {
+            "name": "jokes_skill"
+        },
+        {
+            "name": "goodday_skill"
+        }
+    ]
+}

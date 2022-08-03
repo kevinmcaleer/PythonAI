@@ -1,7 +1,9 @@
 from datetime import date
 from enum import Enum
 from uuid import uuid4
-
+from dataclasses import dataclass
+from skills import factory
+from ai import AI
 
 class Status(Enum):
     """ The Todo Statuses """
@@ -9,12 +11,10 @@ class Status(Enum):
     IN_PROGRESS =  1
     COMPLETED = 2
 
-
 class Priority(Enum):
     LOW = 0
     MEDIUM = 1
     HIGH = 2
-
 
 class Item():
     __creation_date = date.today()
@@ -184,11 +184,62 @@ class Todo():
         if uuid:
             self.__todos.remove(uuid)
             return True
+    
+@dataclass
+class Todo_skill():
+    name = 'todo_skill'
 
+    def commands(self, command:str):
+        return ["add to-do","add to do", "add item","list todos", "list todo", "list to do", 
+                "list to-do", "list to do's",'list items',"remove todo", 
+                "remove item", "mark done", "remove todos", "remove to-do", "remove to do's"]
 
-# i = Item("Get shopping")
-# l = Todo()
-# l.new_item(i)
-# l.show()    
-# l.remove_item(title='Get shopping')
-# l.show() 
+    def handle_command(self, command:str, ai:AI):
+        if command in ["add to-do","add to do", "add item"]:
+            add_todo()
+        command = ""
+        if command in ["list todos", "list todo", "list to do", "list to-do", "list to do's",'list items']:
+            list_todos()
+        command = ""
+        if command in ["remove todo", "remove item", "mark done", "remove todos", "remove to-do", "remove to do's"]:
+            remove_todo()
+        return command
+
+def initialize():
+    factory.register('jokes_skill', Jokes_skill)
+    print("Jokes Skill initialized")
+
+todo = Todo()
+
+def add_todo(alf:AI)->bool:
+    item = Item()
+    alf.say("Tell me what to add to the list")
+    try:
+        item.title = alf.listen()
+        todo.new_item(item)
+        message = "Added " + item.title
+        alf.say(message)
+        return True
+    except:
+        print("oops there was an error")
+        return False
+    
+def list_todos(alf:AI):
+    if len(todo) > 0:
+        alf.say("Here are your to do's")
+        for item in todo:
+            alf.say(item.title)
+    else:
+        alf.say("The to do list is empty!")
+
+def remove_todo(alf:AI)->bool:
+    alf.say("Tell me which item to remove")
+    try:
+        item_title = alf.listen()
+        todo.remove_item(title=item_title)
+        message = "Removed " + item_title
+        alf.say(message)
+        return True
+    except:
+        print("opps there was an error")
+        return False

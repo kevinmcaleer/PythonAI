@@ -1,6 +1,14 @@
 import pyttsx3
 import speech_recognition as sr 
 from conversation_history import Conversation_history
+from vosk import Model, KaldiRecognizer
+from pyaudio import PyAudio, paInt16
+import json
+
+"""
+pip install vosk
+download the models from https://alphacephei.com/vosk/models
+"""
 
 class AI():
     __name = ""
@@ -17,16 +25,23 @@ class AI():
         # voices = self.engine.getProperty('voices')
         # for voice in voices:
         #     print(voice, voice.id)
-        self.r = sr.Recognizer()
-        self.m = sr.Microphone()
+        # self.r = sr.Recognizer()
+        model = Model('./model') # path to model
+        self.r = KaldiRecognizer(model, 16000)
+        # self.m = sr.Microphone() 
+        self.m = PyAudio()
 
         if name is not None:
             self.__name = name 
 
-        print("Listening")
-        with self.m as source:
-            self.r.adjust_for_ambient_noise(source)
+       
+        self.audio = self.m.open(format=paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+        self.audio.start_stream()
 
+        # print("calibratng microphone")
+        # with self.m as source:
+        #     self.r.adjust_for_ambient_noise(source)
+        #     print("done calibrating")
     @property 
     def name(self):
         return self.__name
@@ -45,28 +60,17 @@ class AI():
         self.engine.runAndWait()
 
     def listen(self):
-        print("Say Something")
-
-        with self.m as source:
-            try:
-                audio = self.r.listen(source)
-            except:
-                pass
-        # print("got it")
+        # print("Say Something")
+        heard_something = False
+        audio = None
+      
         phrase = ""
-        try:
-            phrase = self.r.recognize_google(audio, show_all=False, language="en_US")
-            phrase = str(phrase)
-            # sentence = "Got it, you said" + phrase
-            # self.engine.say(sentence)
-            # self.engine.runAndWait()
-        except:
-            pass
-            # print("Sorry, didn't catch that")
-            # self.engine.say("Sorry didn't catch that")
-            # self.engine.runAndWait()
-        print("You Said", phrase)
-        return phrase
-    
+
+        if self.r.AcceptWaveform(self.audio.read(4096,exception_on_overflow = False)): 
+            phrase = self.r.Result()
+            phrase = str(json.loads(phrase)["text"])
+            self.__conversation_history.add_item(message_type='COMMAND', message=phrase)
+            return phrase   
+        return None
     def get_conversation(self):
         return self.__conversation_history.get_items()
