@@ -4,6 +4,17 @@ An opensource AI Assistant for the Raspberry Pi
 
 ---
 
+## 1 August Update
+I'm returning to this project and will be doing a couple of new videos to improve the capabilities and to tidy up our code as its grown a bit unwieldly!
+
+Here are a couple of things I'll be looking next:
+- [x] a conversation history 
+- [ ] a conversation API
+- [ ] a web interface (finally!)
+- [ ] a 'proper' skills framework, using plugin technology
+
+---
+
 Create an API key (its free) at <home.openweathermap.org>
 
 
