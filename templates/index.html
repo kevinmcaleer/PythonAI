@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PythonAI Chatlog</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js">
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            var intervalId = window.setInterval(doAjax, 500);
+
+            function doAjax() {
+                $.get("/api", function (data, status) {
+                    var obj = data;
+                    console.log(data);
+                    $('#chatlog').html("<li>" + obj.chatlog + "</li>");
+                    $.each(obj, function (key, value) {
+                        $("#" + key).html(value);
+                    
+                
+                });
+            });
+        }
+        </script>
+    </head>
+    <body>
+
+        <div class="container">
+            <div  class="">
+                <ul id="chatlog">
+
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

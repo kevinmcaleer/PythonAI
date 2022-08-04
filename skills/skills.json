@@ -1,5 +1,5 @@
 {
-    "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes", "skills.goodday"],
+    "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes"],
     "skills": [
         {
             "name": "weather_skill"

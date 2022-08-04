@@ -1,9 +1,8 @@
 import pyttsx3
-import speech_recognition as sr 
-from conversation_history import Conversation_history
 from vosk import Model, KaldiRecognizer
 from pyaudio import PyAudio, paInt16
 import json
+from eventhook import Event_hook
 
 """
 pip install vosk
@@ -13,8 +12,8 @@ download the models from https://alphacephei.com/vosk/models
 class AI():
     __name = ""
     __skill = []
-    __conversation_history = Conversation_history()
-
+   
+    
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
         # self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.ava.premium')
@@ -38,10 +37,12 @@ class AI():
         self.audio = self.m.open(format=paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
         self.audio.start_stream()
 
-        # print("calibratng microphone")
-        # with self.m as source:
-        #     self.r.adjust_for_ambient_noise(source)
-        #     print("done calibrating")
+        # Setup event hooks
+        self.before_speaking = Event_hook()
+        self.after_speaking = Event_hook()
+        self.before_listening = Event_hook()
+        self.after_listening = Event_hook()
+        
     @property 
     def name(self):
         return self.__name
@@ -55,22 +56,27 @@ class AI():
 
     def say(self, sentence):
         print(sentence)
-        self.__conversation_history.add_item(message_type='RESPONSE', message=sentence)
+        self.before_speaking.trigger(sentence)
         self.engine.say(sentence)
         self.engine.runAndWait()
+        self.after_speaking.trigger(sentence)
 
     def listen(self):
         # print("Say Something")
-        heard_something = False
-        audio = None
-      
+           
         phrase = ""
-
+        
         if self.r.AcceptWaveform(self.audio.read(4096,exception_on_overflow = False)): 
+            self.before_listening.trigger()
             phrase = self.r.Result()
+            phrase = phrase.removeprefix('the')
+            
             phrase = str(json.loads(phrase)["text"])
-            self.__conversation_history.add_item(message_type='COMMAND', message=phrase)
+
+            if phrase:
+                self.after_listening.trigger(phrase)
             return phrase   
+
         return None
     def get_conversation(self):
         return self.__conversation_history.get_items()

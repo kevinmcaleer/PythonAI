@@ -3,14 +3,39 @@ from datetime import datetime
 # from calendar_skill import Calendar_skill
 # import dateparser 
 from skills import factory, loader
+from plugins import plugin_loader, plugin_factory
 import json
+from threading import Thread
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
+import logging 
+from eventhook import Event_hook
 
 alf = AI()
+
+# Setup events for plugins to attach to
+start = Event_hook()
+stop = Event_hook()
 
 # calendar = Calendar_skill()
 # calendar.load()
 
-    
+# move to plugin
+app = Flask(__name__)
+
+@app.route('/api')
+def conversation_history():
+    return alf.get_conversation()
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+def start_flask_thread():
+    """ Start flask thread """
+    print("starting flask thread")
+    app.run(debug=False, host='0.0.0.0', port=8080)
+    app.logger.setLevel(logging.ERROR)
+
 def add_event()->bool:
     alf.say("What is the name of the event")
     try:
@@ -77,22 +102,38 @@ def list_events(period):
 
 command = ""
 
-# register the skills
-# factory.register('hello_world', Hello_skill)
-# factory.register('weather_skill', Weather_skill)
-
+# load the skills
 with open("./skills/skills.json") as f:
     data = json.load(f)
 
     # load the plugins
     loader.load_skills(data["plugins"])
-print(data["skills"])
+
 skills = [factory.create(item) for item in data["skills"]]
 print(f'skills: {skills}')
 
+# Load the plugins
+with open("./plugins/plugins.json") as f:
+    plugin_data = json.load(f)
+    print(f'plugins: {plugin_data["plugins"]}')
+    # load the plugins
+    plugin_loader.load_plugins(plugin_data["plugins"])
+
+plugins = [plugin_factory.create(item) for item in plugin_data["items"]]
+
+# Register all the plugins
+for item in plugins:
+    item.register(alf)
+
+# move api server to plugin
+print("starting API server")
+flask = Thread(target=start_flask_thread,args=())
+flask.start()
+
+start.trigger()
 
 alf.say("Hello")
-while True and command != "good bye":
+while True and command not in ["good bye", 'bye', 'quit', 'exit','goodbye', 'the exit']:
     command = ""
     command = alf.listen()
     if command:
@@ -119,3 +160,10 @@ while True and command != "good bye":
     #     list_events(period='all')
   
 alf.say("Goodbye!")
+
+# move to plugin
+# shutdown the flask server
+flask.join()
+
+# tell the plugins the server is shutting down
+stop.trigger()
