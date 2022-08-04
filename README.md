@@ -27,8 +27,10 @@ I've refactored almost all the code from the original project to make it easier 
 
 The new skills framework mean that adding a new conversation history was very simple - I was even able to quickly add an API on top of the conversation history so we can read that in and dynamically update it using some javascript (and jQuery to pull in the convesation history data from the API).
 
-# Skills framework
+## Skills framework
+
 The new skills framework is very simple to implement:
+
 1. Create a new python file in the `skills` folder
 2. add a new class such as:
 
@@ -47,6 +49,7 @@ def initialize():
     factory.register('insult_skill', Insult_skill)
 
 ```
+
 3. Update the `skills.json` file to include the new skill:
 
 ``` json
