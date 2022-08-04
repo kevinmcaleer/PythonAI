@@ -10,7 +10,6 @@ class Jokes_skill():
     def commands(self, command:str):
         return ['tell me a joke','make me laugh', 'joke']
 
-       
     def handle_command(self, command:str, ai:AI):
         joke = pyjokes.get_joke()
         ai.say(joke)
@@ -18,5 +17,5 @@ class Jokes_skill():
 
 def initialize():
     factory.register('jokes_skill', Jokes_skill)
-    print("Jokes Skill initialized")
+    # print("Jokes Skill initialized")
 

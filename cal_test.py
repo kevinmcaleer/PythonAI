@@ -3,7 +3,7 @@
 # Kevin McAleer
 # 18 August 2021
 
-from calendar_skill import Calendar, Calendar_skill
+from skills.calendar import Calendar, Calendar_skill
 
 mycal = Calendar_skill()
 mycal.load()

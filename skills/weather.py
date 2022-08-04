@@ -98,4 +98,4 @@ class Weather_skill:
 
 def initialize():
     factory.register('weather_skill', Weather_skill)
-    print("Weather initialized")
+    # print("Weather initialized")

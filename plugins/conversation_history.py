@@ -6,14 +6,18 @@ from time import strftime, localtime
 from dataclasses import dataclass
 from ai import AI
 import plugins.plugin_factory
+from flask import Flask
+from flask_cors import CORS
+import logging
+from threading import Thread
 
 class Conversation_history:
     items = []
     history: int = 20
-
+  
     def __init__(self):
         self.items = []
-
+        
     def add_item(self, message_type:str, message:str):
         """ Add items into the conversation history """
 
@@ -43,7 +47,12 @@ class Conversation_history:
 @dataclass
 class Conversation_history_plugin:
     name = 'conversation_history'
+    app = None
+
     __conversation_history = Conversation_history()
+    def __init__(self):
+        self.app = Flask(__name__)
+        CORS(self.app)
 
     def add_response(self, message):
         self.__conversation_history.add_item(message_type='RESPONSE', message=message)
@@ -53,11 +62,33 @@ class Conversation_history_plugin:
         self.__conversation_history.add_item(message_type='COMMAND', message=message)
         return self
 
+    def get_history(self):
+        return self.__conversation_history.get_items()
+
+    def start_flask_thread(self):
+        """ Start flask thread """
+        print("starting api thread")
+        self.app.add_url_rule('/api', 'conversation_history', self.get_history)
+        self.app.run(debug=False, host='0.0.0.0', port=2222)
+        self.app.logger.setLevel(logging.ERROR)
+
+    def start(self):
+        print("starting API server")
+        self.flask = Thread(target=self.start_flask_thread,args=())
+        self.flask.start()
+        return self
+
+    def stop(self):
+        # shutdown the flask server
+        print("stopping api server")
+        self.flask.join()
+
     def register(self, ai:AI):
         self.ai = ai
-        
         self.ai.after_speaking.register(self.add_response)
         self.ai.after_listening.register(self.add_command) 
+        self.ai.start.register(self.start)  
+        self.ai.stop.register(self.stop)
         return self
 
 def initialize():

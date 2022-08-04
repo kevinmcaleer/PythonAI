@@ -28,4 +28,4 @@ class GooddaySkill:
 
 def initialize():
     factory.register('goodday_skill', GooddaySkill)
-    print("goodday initialized")
+    # print("goodday initialized")

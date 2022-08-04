@@ -13,7 +13,6 @@ class AI():
     __name = ""
     __skill = []
    
-    
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
         # self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.ava.premium')
@@ -33,7 +32,6 @@ class AI():
         if name is not None:
             self.__name = name 
 
-       
         self.audio = self.m.open(format=paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
         self.audio.start_stream()
 
@@ -78,5 +76,5 @@ class AI():
             return phrase   
 
         return None
-    def get_conversation(self):
-        return self.__conversation_history.get_items()
+    # def get_conversation(self):
+    #     return self.__conversation_history.get_items()
