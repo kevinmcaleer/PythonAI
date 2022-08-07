@@ -15,18 +15,15 @@ class AI():
    
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
-        # self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.ava.premium')
+
         voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice' ,voices[5].id)
         name = voices[5].name
         print(name)
-        # voices = self.engine.getProperty('voices')
-        # for voice in voices:
-        #     print(voice, voice.id)
-        # self.r = sr.Recognizer()
+
         model = Model('./model') # path to model
         self.r = KaldiRecognizer(model, 16000)
-        # self.m = sr.Microphone() 
+
         self.m = PyAudio()
 
         if name is not None:
@@ -60,7 +57,6 @@ class AI():
         self.after_speaking.trigger(sentence)
 
     def listen(self):
-        # print("Say Something")
            
         phrase = ""
         
@@ -76,5 +72,3 @@ class AI():
             return phrase   
 
         return None
-    # def get_conversation(self):
-    #     return self.__conversation_history.get_items()

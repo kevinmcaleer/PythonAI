@@ -16,5 +16,3 @@ def load_skills(plugins: list[str])->None:
     for plugin_name in plugins:
        plugin = import_module(plugin_name)
        plugin.initialize()
-    #    print(f'loaded and initialised {plugin}')
-    

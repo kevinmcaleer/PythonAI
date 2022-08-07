@@ -17,5 +17,5 @@ class Jokes_skill():
 
 def initialize():
     factory.register('jokes_skill', Jokes_skill)
-    # print("Jokes Skill initialized")
+
 
