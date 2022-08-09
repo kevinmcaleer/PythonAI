@@ -8,7 +8,7 @@ class Facts_skill():
     name = 'facts_skill'
 
     def commands(self, command:str):
-        return ['tell me a fact','tell me something']
+        return ['tell me a fact','tell me something',"i'm bored"]
   
     def handle_command(self, command:str, ai:AI):
         fact = randfacts.get_fact()
@@ -17,4 +17,4 @@ class Facts_skill():
 
 def initialize():
     factory.register('facts_skill', Facts_skill)
-    # print("Facts Skill initialized")
+ 
