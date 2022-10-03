@@ -3,6 +3,7 @@ from vosk import Model, KaldiRecognizer
 from pyaudio import PyAudio, paInt16
 import json
 from eventhook import Event_hook
+from threading import Thread, Lock
 
 """
 pip install vosk
@@ -12,6 +13,7 @@ download the models from https://alphacephei.com/vosk/models
 class AI():
     __name = ""
     __skill = []
+    lock = Lock()
    
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
@@ -49,13 +51,30 @@ class AI():
         self.engine.say(sentence)
         self.engine.runAndWait()
 
-    def say(self, sentence):
+    def speak(self, sentence):
+        """ Added extra function so it can be can be called from a thread """
+        
+        # Lock the thread so it doesn't try to speak while it is already speaking
+        self.lock.acquire()
         print(sentence)
         self.before_speaking.trigger(sentence)
         self.engine.say(sentence)
-        self.engine.runAndWait()
+        self.engine.iterate()
+        # self.engine.runAndWait()
         self.after_speaking.trigger(sentence)
 
+        # Release the lock
+        self.lock.release()
+
+
+    def say(self, sentence):
+        """ launch a new thread to speak """
+        self.engine.startLoop(False)
+        t = Thread(target = self.speak, args = (sentence,))
+        t.start()
+        self.engine.endLoop()
+        # t.join()
+        
     def listen(self):
            
         phrase = ""
@@ -72,3 +91,7 @@ class AI():
             return phrase   
 
         return None
+
+    def stop_ai(self):
+        self.engine.stop()
+        print("stopped engine")

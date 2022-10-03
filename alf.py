@@ -4,6 +4,7 @@ from skills import factory, loader
 from plugins import plugin_loader, plugin_factory
 import json
 from eventhook import Event_hook
+import sys
 
 alf = AI()
 
@@ -37,8 +38,8 @@ for item in plugins:
     item.register(alf)
 
 alf.start.trigger()
-
 alf.say("Hello")
+command = ""
 while True and command not in ["good bye", 'bye', 'quit', 'exit','goodbye', 'the exit']:
     command = ""
     command = alf.listen()
@@ -48,8 +49,15 @@ while True and command not in ["good bye", 'bye', 'quit', 'exit','goodbye', 'the
         for skill in skills:
             if command in skill.commands(command):
                 skill.handle_command(command, alf)
-  
+
 alf.say("Goodbye!")
 
 # tell the plugins the server is shutting down
+print('telling triggers to stop')
 alf.stop.trigger()
+print('telling ai to stop')
+alf.stop_ai()
+print('deleting ai')
+del(alf)
+print('done')
+
