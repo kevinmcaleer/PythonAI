@@ -82,7 +82,7 @@ class AI():
         if self.r.AcceptWaveform(self.audio.read(4096,exception_on_overflow = False)): 
             self.before_listening.trigger()
             phrase = self.r.Result()
-            phrase = phrase.removeprefix('the')
+            phrase = phrase.removeprefix('the ')
             
             phrase = str(json.loads(phrase)["text"])
 
