@@ -10,8 +10,10 @@ pip install vosk
 download the models from https://alphacephei.com/vosk/models
 """
 
+BOT_NAME = "alf"
+
 class AI():
-    __name = ""
+    __name = BOT_NAME
     __skill = []
     lock = Lock()
    
