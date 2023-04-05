@@ -4,3 +4,4 @@ __pycache__
 key.py 
 model
 model_old
+venv*
